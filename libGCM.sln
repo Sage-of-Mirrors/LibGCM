@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libGCM", "libGCM\libGCM.csproj", "{83E40CD3-22A3-462B-AA3B-B75C6F6DB472}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchiveToolsLib", "WArchive-Tools\ArchiveToolsLib\ArchiveToolsLib.csproj", "{B715685D-1603-4CE3-8EA1-552B01C2BA4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCISOTool", "GCISOTool\GCISOTool.csproj", "{8E697333-E948-4462-9532-3E0F1FFBB83A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{83E40CD3-22A3-462B-AA3B-B75C6F6DB472}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83E40CD3-22A3-462B-AA3B-B75C6F6DB472}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83E40CD3-22A3-462B-AA3B-B75C6F6DB472}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83E40CD3-22A3-462B-AA3B-B75C6F6DB472}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B715685D-1603-4CE3-8EA1-552B01C2BA4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B715685D-1603-4CE3-8EA1-552B01C2BA4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B715685D-1603-4CE3-8EA1-552B01C2BA4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B715685D-1603-4CE3-8EA1-552B01C2BA4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E697333-E948-4462-9532-3E0F1FFBB83A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E697333-E948-4462-9532-3E0F1FFBB83A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E697333-E948-4462-9532-3E0F1FFBB83A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E697333-E948-4462-9532-3E0F1FFBB83A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
