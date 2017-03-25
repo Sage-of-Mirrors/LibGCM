@@ -68,5 +68,69 @@ namespace libGCM
             ISO iso = new ISO();
             iso.WriteISO(root, outputPath);
         }
+
+        /// <summary>
+        /// Returns the directory at the provided path, if it exists.
+        /// </summary>
+        /// <param name="dirPath"></param>
+        /// <returns></returns>
+        public static VirtualFilesystemDirectory FindDirectory(VirtualFilesystemDirectory root, string dirPath)
+        {
+            VirtualFilesystemDirectory result = root;
+            List<string> dividedPath = new List<string>(dirPath.ToLower().Split('\\'));
+            int pathIndex = 0;
+
+            while (pathIndex < dividedPath.Count)
+            {
+                for (int i = 0; i < result.Children.Count; i++)
+                {
+                    if (result.Children[i].Name.ToLower() == dividedPath[pathIndex] && result.Children[i].Type == NodeType.Directory)
+                    {
+                        result = result.Children[i] as VirtualFilesystemDirectory;
+                        break;
+                    }
+                }
+
+                pathIndex++;
+            }
+
+            return result;
+        }
+
+        public static VirtualFilesystemFile FindFile(VirtualFilesystemDirectory root, string filePath)
+        {
+            VirtualFilesystemFile result = null;
+            VirtualFilesystemDirectory curDir = root;
+            List<string> dividedPath = new List<string>(filePath.ToLower().Split('\\'));
+            int pathIndex = 0;
+
+            while (pathIndex < dividedPath.Count)
+            {
+                for (int i = 0; i < curDir.Children.Count; i++)
+                {
+                    if (curDir.Children[i].Type == NodeType.File)
+                    {
+                        VirtualFilesystemFile cand = curDir.Children[i] as VirtualFilesystemFile;
+
+                        if (cand.Name.ToLower() + cand.Extension.ToLower() == dividedPath[pathIndex])
+                        {
+                            result = cand;
+                            break;
+                        }
+                    }
+
+                    if (curDir.Children[i].Name.ToLower() == dividedPath[pathIndex])
+                    {
+                        if (curDir.Children[i].Type == NodeType.Directory)
+                            curDir = curDir.Children[i] as VirtualFilesystemDirectory;
+                        break;
+                    }
+                }
+
+                pathIndex++;
+            }
+
+            return result;
+        }
     }
 }

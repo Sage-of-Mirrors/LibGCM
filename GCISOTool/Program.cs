@@ -14,7 +14,7 @@ namespace GCISOTool
     {
         static void Main(string[] args)
         {
-            string testInPath = @"D:\Games\GameCube\Luigi's Mansion (GLME01).iso";
+            string testInPath = @"D:\Games\GameCube\The Legend of Zelda - The Wind Waker (GZLE01).iso";
             string testOutPath = @"D:\SZS Tools\GCISOTool Tests\GLME01";
             string testISOPath = @"D:\SZS Tools\GCISOTool Tests\GLME01_test.iso";
 
@@ -23,9 +23,11 @@ namespace GCISOTool
                 EndianBinaryReader reader = new EndianBinaryReader(stm, Endian.Big);
                 VirtualFilesystemDirectory iso = ISOUtilities.LoadISO(testInPath);
 
-                ISOUtilities.DumpISOContents(iso, testOutPath);
-                ISOUtilities.DumpISOContents(testInPath, testOutPath);
-                ISOUtilities.DumpToISO(iso, testISOPath);
+                //ISOUtilities.DumpISOContents(iso, testOutPath);
+                //ISOUtilities.DumpISOContents(testInPath, testOutPath);
+                //ISOUtilities.DumpToISO(iso, testISOPath);
+                VirtualFilesystemDirectory dir = ISOUtilities.FindDirectory(iso, @"res\Stage\A_Mori");
+                VirtualFilesystemFile file = ISOUtilities.FindFile(iso, @"res\Stage\A_Mori\room0.arc");
             }
         }
     }
