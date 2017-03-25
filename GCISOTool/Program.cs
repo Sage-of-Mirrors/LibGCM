@@ -26,7 +26,7 @@ namespace GCISOTool
                 //ISOUtilities.DumpISOContents(iso, testOutPath);
                 //ISOUtilities.DumpISOContents(testInPath, testOutPath);
                 //ISOUtilities.DumpToISO(iso, testISOPath);
-                VirtualFilesystemDirectory dir = ISOUtilities.FindDirectory(iso, @"res\Stage\A_Mori");
+                VirtualFilesystemDirectory dir = ISOUtilities.FindDirectory(iso, @"res\Stage\Pjavd");
                 VirtualFilesystemFile file = ISOUtilities.FindFile(iso, @"res\Stage\A_Mori\room0.arc");
             }
         }

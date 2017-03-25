@@ -70,26 +70,39 @@ namespace libGCM
         }
 
         /// <summary>
-        /// Returns the directory at the provided path, if it exists.
+        /// Returns the directory at the provided path, if it exists. If it doesn't, it will return null.
         /// </summary>
         /// <param name="dirPath"></param>
         /// <returns></returns>
         public static VirtualFilesystemDirectory FindDirectory(VirtualFilesystemDirectory root, string dirPath)
         {
             VirtualFilesystemDirectory result = root;
+            VirtualFilesystemDirectory currentDir = root;
             List<string> dividedPath = new List<string>(dirPath.ToLower().Split('\\'));
+            // This will remember where we are in dividePath above
             int pathIndex = 0;
 
+            // We're going to run through the current root's children and compare them to dividedPath[pathIndex].
+            // If their names are the same and the child is a directory, we will move that directory to result
+            // and restart the loop, moving on to the next element in dividedPath.
             while (pathIndex < dividedPath.Count)
             {
                 for (int i = 0; i < result.Children.Count; i++)
                 {
-                    if (result.Children[i].Name.ToLower() == dividedPath[pathIndex] && result.Children[i].Type == NodeType.Directory)
+                    if (currentDir.Children[i].Name.ToLower() == dividedPath[pathIndex] && currentDir.Children[i].Type == NodeType.Directory)
                     {
-                        result = result.Children[i] as VirtualFilesystemDirectory;
+                        currentDir = currentDir.Children[i] as VirtualFilesystemDirectory;
                         break;
                     }
                 }
+
+                // If the current dir is the same as the result, that means we didn't find the next dir in the list.
+                // In turn, that means the dir we're looking for doesn't exist.
+                if (currentDir == result)
+                    return null;
+                // Otherwise it does exist, so we set result to the current dir to set up the next check.
+                else
+                    result = currentDir;
 
                 pathIndex++;
             }
@@ -97,6 +110,12 @@ namespace libGCM
             return result;
         }
 
+        /// <summary>
+        /// Returns the file at the given path, if it exists. If the file does not exist, it will return null.
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         public static VirtualFilesystemFile FindFile(VirtualFilesystemDirectory root, string filePath)
         {
             VirtualFilesystemFile result = null;
