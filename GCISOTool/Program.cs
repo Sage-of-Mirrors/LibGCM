@@ -14,20 +14,125 @@ namespace GCISOTool
     {
         static void Main(string[] args)
         {
-            string testInPath = @"D:\Games\GameCube\The Legend of Zelda - The Wind Waker (GZLE01).iso";
-            string testOutPath = @"D:\SZS Tools\GCISOTool Tests\GLME01";
-            string testISOPath = @"D:\SZS Tools\GCISOTool Tests\GLME01_test.iso";
-
-            using (FileStream stm = new FileStream(testInPath, FileMode.Open, FileAccess.Read))
+            if (args.Length == 0)
+                ShowHelpMessage();
+            else if (args.Length == 1)
             {
-                EndianBinaryReader reader = new EndianBinaryReader(stm, Endian.Big);
-                VirtualFilesystemDirectory iso = ISOUtilities.LoadISO(testInPath);
+                string fileDirTest = Path.GetExtension(args[0]);
+                if (fileDirTest == ".iso")
+                {
+                    string outName = $"{Path.GetDirectoryName(args[0])}\\{Path.GetFileNameWithoutExtension(args[0])}";
+                    DumpISO(args[0], outName);
+                }
+                else if (fileDirTest == "")
+                {
+                    string outName = $"{Path.GetDirectoryName(args[0])}\\{Path.GetFileNameWithoutExtension(args[0])}.iso";
+                    BuildISO(args[0], outName);
+                }
+            }
+            else
+            {
+                string inputPath = "";
+                string outputPath = "";
 
-                //ISOUtilities.DumpISOContents(iso, testOutPath);
-                //ISOUtilities.DumpISOContents(testInPath, testOutPath);
-                //ISOUtilities.DumpToISO(iso, testISOPath);
-                VirtualFilesystemDirectory dir = ISOUtilities.FindDirectory(iso, @"res\Stage\Pjavd");
-                VirtualFilesystemFile file = ISOUtilities.FindFile(iso, @"res\Stage\A_Mori\room0.arc");
+                if (args.Length <= 2)
+                    inputPath = args[1];
+                if (args.Length <= 3)
+                {
+                    inputPath = args[1];
+                    outputPath = args[2];
+                }
+
+                if (args[0] == "-dump")
+                {
+                    if (outputPath == "")
+                    {
+                        outputPath = inputPath;
+                    }
+
+                    DumpISO(inputPath, outputPath);
+                }
+                else if (args[0] == "-build")
+                {
+                    if (outputPath == "")
+                        outputPath = $"{inputPath}\\{Path.GetFileName(inputPath)}.iso";
+
+                    BuildISO(inputPath, outputPath);
+                }
+            }
+        }
+
+        static void ShowHelpMessage()
+        {
+            Console.WriteLine("GCISOTool is a commandline tool for working with GameCube ISOs.");
+            Console.WriteLine("Thanks to LordNed for inspiration and all who documented GC ISOs.");
+            Console.WriteLine("For any issues, contact @SageOfMirrors on Twitter or on GitHub.");
+            Console.WriteLine();
+            Console.WriteLine("Usage: GCISOTool [-option] [args]");
+            Console.WriteLine();
+            Console.WriteLine("Options:");
+            Console.WriteLine("-dump  input_iso_path [output_directory_path]               Dumps the contents of the ISO.");
+            Console.WriteLine("-build input_directory      [output_iso_path]               Builds an ISO from the specified directory.");
+        }
+
+        static void DumpISO(string inputPath, string outputPath)
+        {
+            ISOUtilities.DumpISOContents(inputPath, outputPath);
+        }
+
+        static void BuildISO(string inputPath, string outputPath)
+        {
+            VirtualFilesystemDirectory rootDir = new VirtualFilesystemDirectory("root");
+            GetDirectoriesRecursive(rootDir, inputPath);
+            ISOUtilities.DumpToISO(rootDir, outputPath);
+        }
+
+        static void GetDirectoriesRecursive(VirtualFilesystemDirectory root, string rootString)
+        {
+            List<string> files = new List<string>(Directory.GetFiles(rootString));
+
+            // The entries in this subdir need to be in a particular order.
+            // We'll fill them in with null so that we can replace them later.
+            if (Path.GetFileName(rootString) == "&&systemdata")
+            {
+                for (int i = 0; i < 4; i++)
+                    root.Children.Add(null);
+            }
+
+            foreach (string str in files)
+            {
+                string fileName = Path.GetFileNameWithoutExtension(str);
+                string fileExt = Path.GetExtension(str);
+                VirtualFileContents cont = new VirtualFileContents(File.ReadAllBytes(str));
+
+                VirtualFilesystemFile newFile = new VirtualFilesystemFile(fileName, fileExt, cont);
+
+                // These will replace the nulls we put in &&systemdata's child list earlier.
+                if (fileName.ToLower() + fileExt.ToLower() == "iso.hdr")
+                    root.Children[0] = newFile;
+                else if (fileName.ToLower() + fileExt.ToLower() == "apploader.ldr")
+                    root.Children[2] = newFile;
+                else if (fileName.ToLower() + fileExt.ToLower() == "start.dol")
+                    root.Children[1] = newFile;
+                else if (fileName.ToLower() + fileExt.ToLower() == "game.toc")
+                    root.Children[3] = newFile;
+                else
+                    root.Children.Add(newFile);
+            }
+
+            List<string> dirs = new List<string>(Directory.GetDirectories(rootString));
+
+            foreach (string str in dirs)
+            {
+                string dirName = Path.GetFileName(str);
+                VirtualFilesystemDirectory dir = new VirtualFilesystemDirectory(dirName);
+
+                GetDirectoriesRecursive(dir, str);
+
+                if (dirName == "&&systemdata")
+                    root.Children.Insert(0, dir);
+                else
+                    root.Children.Add(dir);
             }
         }
     }

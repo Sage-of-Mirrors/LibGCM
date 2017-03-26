@@ -34,8 +34,8 @@ namespace libGCM
         /// <summary>
         /// Dumps an ISO's contents from the specified root to the provided output path.
         /// </summary>
-        /// <param name="root"></param>
-        /// <param name="outputPath"></param>
+        /// <param name="root">ISO to dump</param>
+        /// <param name="outputPath">Path to dump to</param>
         public static void DumpISOContents(VirtualFilesystemDirectory root, string outputPath)
         {
             ISO iso = new ISO();
@@ -45,8 +45,8 @@ namespace libGCM
         /// <summary>
         /// Dumps an ISO's contents from the specified ISO file to the provided output path.
         /// </summary>
-        /// <param name="inputPath"></param>
-        /// <param name="outputPath"></param>
+        /// <param name="inputPath">Path of the ISO to dump</param>
+        /// <param name="outputPath">Path to dump to</param>
         public static void DumpISOContents(string inputPath, string outputPath)
         {
             ISO iso = new ISO();
@@ -61,8 +61,8 @@ namespace libGCM
         /// <summary>
         /// Outputs an ISO file containing the specified root to the provided output path.
         /// </summary>
-        /// <param name="root"></param>
-        /// <param name="outputPath"></param>
+        /// <param name="root">Directory to output to ISO</param>
+        /// <param name="outputPath">Path to output ISO to</param>
         public static void DumpToISO(VirtualFilesystemDirectory root, string outputPath)
         {
             ISO iso = new ISO();
@@ -72,7 +72,7 @@ namespace libGCM
         /// <summary>
         /// Returns the directory at the provided path, if it exists. If it doesn't, it will return null.
         /// </summary>
-        /// <param name="dirPath"></param>
+        /// <param name="dirPath">Path of the directory to serach for</param>
         /// <returns></returns>
         public static VirtualFilesystemDirectory FindDirectory(VirtualFilesystemDirectory root, string dirPath)
         {
@@ -113,16 +113,22 @@ namespace libGCM
         /// <summary>
         /// Returns the file at the given path, if it exists. If the file does not exist, it will return null.
         /// </summary>
-        /// <param name="root"></param>
-        /// <param name="filePath"></param>
+        /// <param name="root">ISO to search</param>
+        /// <param name="filePath">File path to search for</param>
         /// <returns></returns>
         public static VirtualFilesystemFile FindFile(VirtualFilesystemDirectory root, string filePath)
         {
             VirtualFilesystemFile result = null;
             VirtualFilesystemDirectory curDir = root;
+
             List<string> dividedPath = new List<string>(filePath.ToLower().Split('\\'));
             int pathIndex = 0;
 
+            // For each element of the filepath, we'll look at the current directory's children,
+            // starting with the root, and see if the name matches.
+            // If we find a file, we'll check to see if its name and extension match the current
+            // filepath element. If it does, we can break the loop and leave.
+            // If not, we check if it's a directory instead, and if it is, we set curDir to it.
             while (pathIndex < dividedPath.Count)
             {
                 for (int i = 0; i < curDir.Children.Count; i++)
@@ -130,15 +136,15 @@ namespace libGCM
                     if (curDir.Children[i].Type == NodeType.File)
                     {
                         VirtualFilesystemFile cand = curDir.Children[i] as VirtualFilesystemFile;
+                        string fileNameWithExtension = cand.Name.ToLower() + cand.Extension.ToLower();
 
-                        if (cand.Name.ToLower() + cand.Extension.ToLower() == dividedPath[pathIndex])
+                        if (fileNameWithExtension == dividedPath[pathIndex])
                         {
                             result = cand;
                             break;
                         }
                     }
-
-                    if (curDir.Children[i].Name.ToLower() == dividedPath[pathIndex])
+                    else if (curDir.Children[i].Name.ToLower() == dividedPath[pathIndex])
                     {
                         if (curDir.Children[i].Type == NodeType.Directory)
                             curDir = curDir.Children[i] as VirtualFilesystemDirectory;
