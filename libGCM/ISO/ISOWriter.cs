@@ -97,7 +97,7 @@ namespace libGCM.ISOs
         #region Creating whole ISO
         public void WriteISO(VirtualFilesystemDirectory root, string path)
         {
-            using (MemoryStream output = new MemoryStream())
+            using (FileStream output = new FileStream(path, FileMode.Create, FileAccess.Write))
             {
                 EndianBinaryWriter writer = new EndianBinaryWriter(output, Endian.Big);
 
@@ -156,12 +156,6 @@ namespace libGCM.ISOs
                 }
 
                 writer.Write(fstNameBank.ToArray());
-
-                using (FileStream file = new FileStream(path, FileMode.Create, FileAccess.Write))
-                {
-                    EndianBinaryWriter finalWriter = new EndianBinaryWriter(file, Endian.Big);
-                    finalWriter.Write(output.ToArray());
-                }
             }
         }
 
