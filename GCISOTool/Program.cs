@@ -93,7 +93,7 @@ namespace GCISOTool
 
             // The entries in this subdir need to be in a particular order.
             // We'll fill them in with null so that we can replace them later.
-            if (Path.GetFileName(rootString) == "&&systemdata")
+            if (Path.GetFileName(rootString).ToLowerInvariant() == "&&systemdata")
             {
                 for (int i = 0; i < 4; i++)
                     root.Children.Add(null);
@@ -107,14 +107,18 @@ namespace GCISOTool
 
                 VirtualFilesystemFile newFile = new VirtualFilesystemFile(fileName, fileExt, cont);
 
+                string fileNameLower = fileName.ToLowerInvariant();
+                string fileExtLower = fileExt.ToLowerInvariant();
+                string fullFileName = fileNameLower + fileExtLower;
+
                 // These will replace the nulls we put in &&systemdata's child list earlier.
-                if (fileName.ToLower() + fileExt.ToLower() == "iso.hdr")
+                if ((fullFileName == "iso.hdr") || (fullFileName == "isoheader.hdr"))
                     root.Children[0] = newFile;
-                else if (fileName.ToLower() + fileExt.ToLower() == "apploader.ldr")
+                else if (fullFileName == "apploader.ldr")
                     root.Children[2] = newFile;
-                else if (fileName.ToLower() + fileExt.ToLower() == "start.dol")
+                else if (fullFileName == "start.dol")
                     root.Children[1] = newFile;
-                else if (fileName.ToLower() + fileExt.ToLower() == "game.toc")
+                else if (fullFileName == "game.toc")
                     root.Children[3] = newFile;
                 else
                     root.Children.Add(newFile);
@@ -125,11 +129,12 @@ namespace GCISOTool
             foreach (string str in dirs)
             {
                 string dirName = Path.GetFileName(str);
+                string dirNameLower = dirName.ToLowerInvariant();
                 VirtualFilesystemDirectory dir = new VirtualFilesystemDirectory(dirName);
 
                 GetDirectoriesRecursive(dir, str);
 
-                if (dirName == "&&systemdata")
+                if (dirNameLower == "&&systemdata")
                     root.Children.Insert(0, dir);
                 else
                     root.Children.Add(dir);
