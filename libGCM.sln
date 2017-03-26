@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchiveToolsLib", "WArchive
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCISOTool", "GCISOTool\GCISOTool.csproj", "{8E697333-E948-4462-9532-3E0F1FFBB83A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFormatReader", "GameFormatReader\GameFormatReader\GameFormatReader.csproj", "{AFCE536D-92FF-4EE5-8536-731D2CD5FBCA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{8E697333-E948-4462-9532-3E0F1FFBB83A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E697333-E948-4462-9532-3E0F1FFBB83A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E697333-E948-4462-9532-3E0F1FFBB83A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFCE536D-92FF-4EE5-8536-731D2CD5FBCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFCE536D-92FF-4EE5-8536-731D2CD5FBCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFCE536D-92FF-4EE5-8536-731D2CD5FBCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFCE536D-92FF-4EE5-8536-731D2CD5FBCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

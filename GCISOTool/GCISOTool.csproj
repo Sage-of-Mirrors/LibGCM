@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GCISOTool</RootNamespace>
     <AssemblyName>GCISOTool</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -35,13 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EndianBinaryStreams">
-      <HintPath>..\libGCM\lib\EndianBinaryStreams.dll</HintPath>
-    </Reference>
-    <Reference Include="libGCM, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\libGCM\bin\Debug\libGCM.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -59,6 +52,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GameFormatReader\GameFormatReader\GameFormatReader.csproj">
+      <Project>{afce536d-92ff-4ee5-8536-731d2cd5fbca}</Project>
+      <Name>GameFormatReader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libGCM\libGCM.csproj">
+      <Project>{83e40cd3-22a3-462b-aa3b-b75c6f6db472}</Project>
+      <Name>libGCM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WArchive-Tools\ArchiveToolsLib\ArchiveToolsLib.csproj">
       <Project>{b715685d-1603-4ce3-8ea1-552b01c2ba4b}</Project>
       <Name>ArchiveToolsLib</Name>

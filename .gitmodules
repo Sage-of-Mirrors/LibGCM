@@ -1,3 +1,6 @@
 [submodule "WArchive-Tools"]
 	path = WArchive-Tools
 	url = https://github.com/LordNed/WArchive-Tools.git
+[submodule "GameFormatReader"]
+	path = GameFormatReader
+	url = https://github.com/lioncash/GameFormatReader.git
